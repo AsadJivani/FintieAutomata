@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dfaor;
+package dfaopr;
 
 import java.util.ArrayList;
 
@@ -11,14 +11,14 @@ import java.util.ArrayList;
  *
  * @author asadj
  */
- class DFAOR {
+public class DFAOR {
 
    //Attributes
      
    DFA F1;
    DFA F2;
    ArrayList<Integer[]> AdjacencyMatrix;
-   ArrayList<ResultantState> States;
+   ArrayList<ResultantStateOR> States;
     
    
    //Constructor  
@@ -39,57 +39,60 @@ import java.util.ArrayList;
     public DFA OR(){
         
         
-        ResultantState InitialState=new ResultantState(F1.InitialState, F2.InitialState);
+        ResultantStateOR InitialState=new ResultantStateOR(F1.InitialState, F2.InitialState);
         States.add(InitialState);
         
         
         for (int i = 0; i < States.size(); i++) {
+  
             
-            AdjacencyMatrix.add(new Integer[2]);
+            AdjacencyMatrix.add(new Integer[F1.Regexes.length]);
             
-            ResultantState State1=new ResultantState(F1.NextState(States.get(i).x, 'a'), F2.NextState(States.get(i).y, 'a'));
-            ResultantState State2=new ResultantState(F1.NextState(States.get(i).x, 'b'), F2.NextState(States.get(i).y, 'b'));
-            
-            if(CheckExistence(State1) == -1){
+            for (int j = 0; j <F1.Regexes.length ; j++) {
                 
-                States.add(State1);
-                AdjacencyMatrix.get(AdjacencyMatrix.size()-1)[0]=States.size()-1;
+                ResultantStateOR State=new ResultantStateOR(F1.NextState(States.get(i).x, F1.Regexes[j].charAt(0)), F2.NextState(States.get(i).y, F1.Regexes[j].charAt(0)));
+                if(CheckExistence(State) == -1){
+                
+                States.add(State);
+                AdjacencyMatrix.get(AdjacencyMatrix.size()-1)[j]=States.size()-1;
             
             }else
-                AdjacencyMatrix.get(AdjacencyMatrix.size()-1)[0]=CheckExistence(State1);
+                AdjacencyMatrix.get(AdjacencyMatrix.size()-1)[j]=CheckExistence(State);
            
-             if(CheckExistence(State2) == -1){
-                
-                States.add(State2);
-                AdjacencyMatrix.get(AdjacencyMatrix.size()-1)[1]=States.size()-1;
-            
-            }else
-                AdjacencyMatrix.get(AdjacencyMatrix.size()-1)[1]=CheckExistence(State2);
-            
-            
-            
-            
+            }
         }
         
         
         
-        int[][] ResulttantMatrix=new int[AdjacencyMatrix.size()][2];
+        int[][] ResulttantMatrix=new int[AdjacencyMatrix.size()][F1.Regexes.length];
         
         for (int i = 0; i < ResulttantMatrix.length; i++) {
             
-            ResulttantMatrix[i][0]=AdjacencyMatrix.get(i)[0];
-            ResulttantMatrix[i][1]=AdjacencyMatrix.get(i)[1];
+            for (int j = 0; j < F1.Regexes.length; j++) {
+                
+                ResulttantMatrix[i][j]=AdjacencyMatrix.get(i)[j];
+            
+            
+            }
+ 
             
         }
         
+        String[] allowedChar=new String[F1.Regexes.length];
         
-        return new DFA(ResulttantMatrix, new String[]{"a","b"}, 0, FindFinalStates());
+        for (int i = 0; i < F1.Regexes.length; i++) {
+            
+            allowedChar[i]=F1.Regexes[i];
+        }
+        
+        
+        return new DFA(ResulttantMatrix,allowedChar,0,FindFinalStates());
         
         
     }
     
     
-    public int CheckExistence(ResultantState NewState){
+    public int CheckExistence(ResultantStateOR NewState){
     
        
         
