@@ -158,8 +158,7 @@ public class DFAClosure {
        public int[] FindFinalStates() {
 
         ArrayList<Integer> FinalStates = new ArrayList<>();
-
-        for (int i = 0; i < States.size(); i++) {
+        FinalStates.add(0);
         
         for (int i = 1; i < States.size(); i++) {
 
