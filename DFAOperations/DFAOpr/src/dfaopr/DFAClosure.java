@@ -33,10 +33,11 @@ public class DFAClosure {
 
         
         ArrayList<Integer> StartState = new ArrayList<>();
+        StartState.add(dfa.InitialState);
         if(CheckFinal(StartState))
             InitialIsFinal=true;
             
-        StartState.add(dfa.InitialState);
+        
         ResultantStateClosure InitialState = new ResultantStateClosure(StartState);
         States.add(InitialState);
         
@@ -159,6 +160,8 @@ public class DFAClosure {
         ArrayList<Integer> FinalStates = new ArrayList<>();
 
         for (int i = 0; i < States.size(); i++) {
+        
+        for (int i = 1; i < States.size(); i++) {
 
             boolean Final = false;
 

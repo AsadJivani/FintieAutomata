@@ -40,7 +40,7 @@ public class DFAOpr {
         String[] input2={"a","b"};
         int InitialStates2=0;
         int[] FinalStates2={2};
-        int[][] Matrix2={{1,0},{2,0},{2,2}/*{1,3},{2,3},{2,2},{1,2}*/};
+        int[][] Matrix2={{1,0},{1,2},{2,2}/*{1,3},{2,3},{2,2},{1,2}*/};
         
         
         DFA F2=new DFA(Matrix2,input2, InitialStates2, FinalStates2);
@@ -59,7 +59,7 @@ public class DFAOpr {
         DFA result5=dfaIntersection.Intersection();
         
         
-        System.out.println("");
+        System.out.println(result3.validate(""));
         
     
         
